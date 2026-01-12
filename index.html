@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shanghai Trip Expenses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+/* CORE SETUP */
+* { box-sizing: border-box; }
+body {
+    background-color: #f3f4f6;
+    margin: 0;
+    padding: 10px;
+    font-family: 'Lato', sans-serif;
+    color: #1f2937;
+}
+
+/* RESPONSIVE CONTAINER */
+.slide-container {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    max-width: 1000px; /* Wider for tables */
+    margin: 0 auto 30px auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* TYPOGRAPHY */
+h1, h2, h3 { font-family: 'Poppins', sans-serif; color: #111; margin: 0; }
+
+h1 { 
+    font-size: clamp(40px, 8vw, 80px);
+    font-weight: 700; 
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+h2.slide-title { 
+    font-size: clamp(24px, 4vw, 36px);
+    padding: 20px 20px; 
+    background: #fff;
+    border-bottom: 2px solid #f3f4f6;
+    color: #0f172a;
+}
+
+.subtitle { 
+    font-size: clamp(18px, 3vw, 24px); 
+    color: #64748b; 
+    line-height: 1.5; 
+}
+
+/* CONTENT AREA */
+.content-area {
+    padding: 20px;
+    overflow-x: auto; /* Horizontal scroll for tables on mobile */
+}
+
+/* SUMMARY GRID */
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    width: 100%;
+}
+.person-summary-card {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+.person-name { font-size: 20px; font-weight: 700; color: #334155; }
+.person-amount { font-size: 24px; font-weight: 700; }
+.amount-positive { color: #15803d; }
+.amount-negative { color: #b91c1c; }
+
+/* TABLE STYLES */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Force width to ensure readability on mobile via scroll */
+}
+
+th {
+    text-align: left;
+    background-color: #f1f5f9;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #475569;
+    border-bottom: 2px solid #cbd5e1;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+}
+
+tr:last-child td { border-bottom: none; }
+
+/* Column Specifics */
+.col-date { width: 120px; font-weight: 600; color: #64748b; font-size: 16px; }
+.col-desc { font-weight: 700; color: #0f172a; font-size: 18px; }
+.col-cost { width: 140px; text-align: right; font-weight: 700; font-size: 20px; color: #0f172a; white-space: nowrap; }
+.col-alloc { width: 40%; }
+
+/* BADGES IN TABLE */
+.badge-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.badge {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+}
+.badge.owes {
+    background-color: #4b5563;
+    color: #ffffff;
+    border: 1px solid #374151;
+}
+.badge.paid {
+    background-color: #dcfce7;
+    color: #166534;
+    border: 1px solid #86efac;
+}
+
+/* HEADER WITH IMAGE */
+.header-with-image {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 20px;
+    background: #fff;
+    border-bottom: 2px solid #f3f4f6;
+}
+.header-thumb {
+    height: 60px;
+    width: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-left: 10px;
+}
+
+/* LAYOUT FOR TITLE SLIDE */
+.title-slide-layout {
+    display: flex;
+    flex-direction: column-reverse;
+}
+.title-content {
+    padding: 40px 20px;
+    text-align: center;
+    background: #fff;
+}
+.title-image {
+    height: 300px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+@media (min-width: 601px) {
+    .title-slide-layout {
+        flex-direction: row;
+        min-height: 400px;
+    }
+    .title-content {
+        flex: 1;
+        text-align: left;
+        padding: 60px;
+    }
+    .title-image { flex: 1; height: auto; }
+}
+    </style>
+</head>
+<body>
+
+<!-- Title Section -->
+<div class="slide-container">
+    <div class="title-slide-layout">
+        <div class="title-content">
+            <h1>Shanghai Trip Expenses</h1>
+            <p class="subtitle">A comprehensive breakdown of all transactions.<br>Every cent accounted for.</p>
+        </div>
+        <div class="title-image" style="background-image: url('http://googleusercontent.com/image_collection/image_retrieval/1824141741211749856');"></div>
+    </div>
+</div>
+
+<!-- Summary Section -->
+<div class="slide-container">
+    <h2 class="slide-title">Total Balance Summary</h2>
+    <div class="content-area">
+        <div class="summary-grid">
+            <div class="person-summary-card" style="background-color: #f0fdf4; border-color: #bbf7d0;">
+                <div class="person-name">Belle</div>
+                <div class="person-amount amount-positive">9,163.43</div>
+            </div>
+            <div class="person-summary-card" style="background-color: #f0fdf4; border-color: #bbf7d0;">
+                <div class="person-name">Cheryl</div>
+                <div class="person-amount amount-positive">4,914.62</div>
+            </div>
+            <div class="person-summary-card">
+                <div class="person-name">Diana</div>
+                <div class="person-amount amount-negative">-1,229.07</div>
+            </div>
+            <div class="person-summary-card">
+                <div class="person-name">Annie</div>
+                <div class="person-amount amount-negative">-1,745.76</div>
+            </div>
+            <div class="person-summary-card">
+                <div class="person-name">Hiang</div>
+                <div class="person-amount amount-negative">-544.00</div>
+            </div>
+            <div class="person-summary-card">
+                <div class="person-name">Billy</div>
+                <div class="person-amount amount-negative">-1,795.07</div>
+            </div>
+            <div class="person-summary-card">
+                <div class="person-name">Darryl</div>
+                <div class="person-amount amount-negative">-1,731.86</div>
+            </div>
+            <div class="person-summary-card">
+                <div class="person-name">Alex</div>
+                <div class="person-amount amount-negative">-1,418.56</div>
+            </div>
+            <div class="person-summary-card">
+                <div class="person-name">Timmy</div>
+                <div class="person-amount amount-negative">-1,669.99</div>
+            </div>
+            <div class="person-summary-card">
+                <div class="person-name">Megan</div>
+                <div class="person-amount amount-negative">-1,700.19</div>
+            </div>
+            <div class="person-summary-card">
+                <div class="person-name">Shirley</div>
+                <div class="person-amount amount-negative">-854.63</div>
+            </div>
+            <div class="person-summary-card">
+                <div class="person-name">Luca</div>
+                <div class="person-amount amount-negative">-1,388.92</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hotel & Insurance -->
+<div class="slide-container">
+    <div class="header-with-image">
+        <h2 class="slide-title" style="border:none;">Hotel & Insurance</h2>
+        <img class="header-thumb" src="http://googleusercontent.com/image_collection/image_retrieval/15781485985894772388">
+    </div>
+    <div class="content-area">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-date">Date</th>
+                    <th class="col-desc">Description</th>
+                    <th class="col-cost">Cost (SGD)</th>
+                    <th class="col-alloc">Shares</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Hotel cost</td>
+                    <td class="col-cost">4,732.73</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Belle: +4,338.34</span>
+                            <span class="badge owes">Diana: -394.40</span>
+                            <span class="badge owes">Annie: -394.40</span>
+                            <span class="badge owes">Hiang: -394.39</span>
+                            <span class="badge owes">Billy: -394.39</span>
+                            <span class="badge owes">Cheryl: -394.39</span>
+                            <span class="badge owes">Darryl: -394.39</span>
+                            <span class="badge owes">Alex: -394.39</span>
+                            <span class="badge owes">Timmy: -394.39</span>
+                            <span class="badge owes">Megan: -394.40</span>
+                            <span class="badge owes">Shirley: -394.40</span>
+                            <span class="badge owes">Luca: -394.40</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Insurance (Cheryl pays for her 3, Diana pays for her 3)</td>
+                    <td class="col-cost">220.94</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Cheryl: +110.47</span>
+                            <span class="badge owes">Diana: -110.47</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Travel -->
+<div class="slide-container">
+    <div class="header-with-image">
+        <h2 class="slide-title" style="border:none;">Travel: Flights & Trains</h2>
+        <img class="header-thumb" src="http://googleusercontent.com/image_collection/image_retrieval/11114483861779337057">
+    </div>
+    <div class="content-area">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-date">Date</th>
+                    <th class="col-desc">Description</th>
+                    <th class="col-cost">Cost (SGD)</th>
+                    <th class="col-alloc">Shares</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Train ticket Hangzhou to Shanghai (5 pax -cheryl paid)</td>
+                    <td class="col-cost">78.28</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Cheryl: +62.63</span>
+                            <span class="badge owes">Diana: -15.66</span>
+                            <span class="badge owes">Billy: -15.65</span>
+                            <span class="badge owes">Darryl: -15.66</span>
+                            <span class="badge owes">Alex: -15.66</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Train ticket Shanghai to Hangzhou (5 pax - cheryl paid)</td>
+                    <td class="col-cost">83.31</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Cheryl: +66.64</span>
+                            <span class="badge owes">Diana: -16.66</span>
+                            <span class="badge owes">Billy: -16.66</span>
+                            <span class="badge owes">Darryl: -16.66</span>
+                            <span class="badge owes">Alex: -16.66</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Train tickets Hangzhou to Shanghai (6pax - belle paid)</td>
+                    <td class="col-cost">92.00</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Belle: +76.66</span>
+                            <span class="badge owes">Annie: -15.34</span>
+                            <span class="badge owes">Hiang: -15.33</span>
+                            <span class="badge owes">Timmy: -15.33</span>
+                            <span class="badge owes">Megan: -15.33</span>
+                            <span class="badge owes">Shirley: -15.33</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Train tickets Shanghai to Hangzhou (6pax - belle paid)</td>
+                    <td class="col-cost">98.78</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Belle: +82.31</span>
+                            <span class="badge owes">Annie: -16.46</span>
+                            <span class="badge owes">Hiang: -16.46</span>
+                            <span class="badge owes">Timmy: -16.46</span>
+                            <span class="badge owes">Megan: -16.47</span>
+                            <span class="badge owes">Shirley: -16.46</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Airport transfer to hotel (cheryl paid)</td>
+                    <td class="col-cost">155.45</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Cheryl: +142.49</span>
+                            <span class="badge owes">Others: ~ -12.95</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Air tickets to shanghai (belle paid)</td>
+                    <td class="col-cost">4,299.60</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Belle: +3,941.30</span>
+                            <span class="badge owes">Others: ~ -358.30</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Air ticket to shanghai (cheryl paid)</td>
+                    <td class="col-cost">4,723.70</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Cheryl: +4,330.06</span>
+                            <span class="badge owes">Others: ~ -393.64</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-31</td>
+                    <td class="col-desc">Airport transfer back to SG (cheryl paid)</td>
+                    <td class="col-cost">153.97</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Cheryl: +141.13</span>
+                            <span class="badge owes">Others: ~ -12.83</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2026-01-08</td>
+                    <td class="col-desc">Luggage Lockers plus additional DiDi (belle paid)</td>
+                    <td class="col-cost">69.56</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Belle: +63.76</span>
+                            <span class="badge owes">Others: ~ -5.80</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Tickets -->
+<div class="slide-container">
+    <div class="header-with-image">
+        <h2 class="slide-title" style="border:none;">Tickets & Attractions</h2>
+        <img class="header-thumb" src="http://googleusercontent.com/image_collection/image_retrieval/10488332413117620385">
+    </div>
+    <div class="content-area">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-date">Date</th>
+                    <th class="col-desc">Description</th>
+                    <th class="col-cost">Cost (SGD)</th>
+                    <th class="col-alloc">Shares</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">wild animal park 3 pax (cheryl paid)</td>
+                    <td class="col-cost">81.27</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Cheryl: +73.88</span>
+                            <span class="badge owes">Belle: -7.38</span>
+                            <span class="badge owes">Diana: -7.39</span>
+                            <span class="badge owes">Annie: -7.39</span>
+                            <span class="badge owes">Hiang: -7.39</span>
+                            <span class="badge owes">Billy: -7.39</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Sheng Gong Yan (1 child - cheryl paid)</td>
+                    <td class="col-cost">96.35</td>
+                    <td>
+                         <div class="badge-container">
+                            <span class="badge paid">Cheryl: +96.35</span>
+                            <span class="badge owes">Luca: -96.35</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Disneyland tickets (elderly + adult - cheryl paid)</td>
+                    <td class="col-cost">137.75</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Belle: +137.75</span>
+                            <span class="badge owes">Diana: -68.88</span>
+                            <span class="badge owes">Annie: -68.87</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Disneyland tickets ( elderly + adult - shirley paid)</td>
+                    <td class="col-cost">137.75</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Shirley: +68.87</span>
+                            <span class="badge owes">Hiang: -68.87</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">wild animal park 5pax (belle paid)</td>
+                    <td class="col-cost">140.45</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Belle: +127.69</span>
+                            <span class="badge owes">Others: ~ -12.77</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Disneyland tickets (elderly + adult - cheryl paid)</td>
+                    <td class="col-cost">143.25</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Cheryl: +71.62</span>
+                            <span class="badge owes">Billy: -71.62</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Disneyland tickets (2 adults - belle paid)</td>
+                    <td class="col-cost">161.89</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Belle: +161.89</span>
+                            <span class="badge owes">Alex: -80.94</span>
+                            <span class="badge owes">Timmy: -80.95</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Disneyland tickets (2 adults - shirley paid)</td>
+                    <td class="col-cost">161.89</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Shirley: +161.89</span>
+                            <span class="badge owes">Belle: -80.94</span>
+                            <span class="badge owes">Megan: -80.95</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Sheng Gong yan (2 adults - belle paid)</td>
+                    <td class="col-cost">219.68</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Belle: +199.71</span>
+                            <span class="badge owes">Others: ~ -19.97</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Sheng Gong Yan ( 4 adults - cheryl paid)</td>
+                    <td class="col-cost">439.36</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Cheryl: +399.42</span>
+                            <span class="badge owes">Others: ~ -39.94</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Sheng Gong Yan (liuyi paid 5 adults)</td>
+                    <td class="col-cost">549.20</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Timmy: +499.28</span>
+                            <span class="badge owes">Others: ~ -49.93</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-27</td>
+                    <td class="col-desc">Zhu Jia Jiao Boat ride (belle paid)</td>
+                    <td class="col-cost">74.55</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Belle: +68.33</span>
+                            <span class="badge owes">Others: ~ -6.21</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-28</td>
+                    <td class="col-desc">Bus feeding tickets (belle paid)</td>
+                    <td class="col-cost">223.64</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Belle: +205.00</span>
+                            <span class="badge owes">Others: ~ -18.64</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-29</td>
+                    <td class="col-desc">hangzhou boat ride (belle paid)</td>
+                    <td class="col-cost">67.02</td>
+                    <td>
+                         <div class="badge-container">
+                            <span class="badge paid">Belle: +55.85</span>
+                            <span class="badge owes">Annie: -11.17</span>
+                            <span class="badge owes">Hiang: -11.17</span>
+                            <span class="badge owes">Timmy: -11.17</span>
+                            <span class="badge owes">Megan: -11.17</span>
+                            <span class="badge owes">Shirley: -11.17</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-29</td>
+                    <td class="col-desc">hangzhou boat ride (diana paid)</td>
+                    <td class="col-cost">67.29</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Diana: +56.07</span>
+                            <span class="badge owes">Billy: -11.21</span>
+                            <span class="badge owes">Cheryl: -11.22</span>
+                            <span class="badge owes">Darryl: -11.21</span>
+                            <span class="badge owes">Alex: -11.21</span>
+                            <span class="badge owes">Luca: -11.22</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-30</td>
+                    <td class="col-desc">wild animal park 3pax (alex paid)</td>
+                    <td class="col-cost">81.27</td>
+                    <td>
+                        <div class="badge-container">
+                            <span class="badge paid">Alex: +73.88</span>
+                            <span class="badge owes">Others: ~ -7.39</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2026-01-08</td>
+                    <td class="col-desc">Capybara feeding tickets (belle paid)</td>
+                    <td class="col-cost">33.00</td>
+                    <td>
+                         <div class="badge-container">
+                            <span class="badge paid">Belle: +27.50</span>
+                            <span class="badge owes">Annie: -5.50</span>
+                            <span class="badge owes">Hiang: -5.50</span>
+                            <span class="badge owes">Timmy: -5.50</span>
+                            <span class="badge owes">Megan: -5.50</span>
+                            <span class="badge owes">Shirley: -5.50</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-date">2026-01-11</td>
+                    <td class="col-desc">Darryl Yu garden ticket (belle)</td>
+                    <td class="col-cost">5.59</td>
+                    <td>
+                         <div class="badge-container">
+                            <span class="badge paid">Belle: +5.59</span>
+                            <span class="badge owes">Diana: -5.59</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Food -->
+<div class="slide-container">
+    <div class="header-with-image">
+        <h2 class="slide-title" style="border:none;">Food & Dining</h2>
+        <img class="header-thumb" src="http://googleusercontent.com/image_collection/image_retrieval/17224883344727473940">
+    </div>
+    <div class="content-area">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-date">Date</th>
+                    <th class="col-desc">Description</th>
+                    <th class="col-cost">Cost (SGD)</th>
+                    <th class="col-alloc">Shares</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">21st meituan supper (cheryl)</td>
+                    <td class="col-cost">30.82</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +28.25</span><span class="badge owes">Others: ~ -2.57</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">22nd meituan dinner + water (cheryl)</td>
+                    <td class="col-cost">106.91</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +97.20</span><span class="badge owes">Others: ~ -9.72</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">Canton 8 brunch (hiang)</td>
+                    <td class="col-cost">252.07</td>
+                    <td><div class="badge-container"><span class="badge paid">Hiang: +229.16</span><span class="badge owes">Others: ~ -22.91</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-24</td>
+                    <td class="col-desc">shirley family dinner bbq chuan chuan (hiang)</td>
+                    <td class="col-cost">14.28</td>
+                    <td><div class="badge-container"><span class="badge paid">Hiang: +14.28</span><span class="badge owes">Belle: -3.57</span><span class="badge owes">Timmy: -3.57</span><span class="badge owes">Megan: -3.57</span><span class="badge owes">Shirley: -3.57</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-24</td>
+                    <td class="col-desc">annie and hiang dinner bbq chuan chuan (hiang)</td>
+                    <td class="col-cost">19.77</td>
+                    <td><div class="badge-container"><span class="badge paid">Hiang: +9.88</span><span class="badge owes">Annie: -9.88</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-24</td>
+                    <td class="col-desc">Hotpot (hiang)</td>
+                    <td class="col-cost">66.45</td>
+                    <td><div class="badge-container"><span class="badge paid">Hiang: +49.84</span><span class="badge owes">Diana: -16.61</span><span class="badge owes">Annie: -16.61</span><span class="badge owes">Billy: -16.62</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-24</td>
+                    <td class="col-desc">Hotpot (belle)</td>
+                    <td class="col-cost">76.85</td>
+                    <td><div class="badge-container"><span class="badge paid">Belle: +57.64</span><span class="badge owes">Timmy: -19.21</span><span class="badge owes">Megan: -19.22</span><span class="badge owes">Shirley: -19.21</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-24</td>
+                    <td class="col-desc">Hotpot (alex)</td>
+                    <td class="col-cost">85.07</td>
+                    <td><div class="badge-container"><span class="badge paid">Alex: +56.72</span><span class="badge owes">Cheryl: -28.36</span><span class="badge owes">Darryl: -28.36</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2025-12-25</td>
+                    <td class="col-desc">diana family dinner bbq chuan chuan (alex)</td>
+                    <td class="col-cost">61.85</td>
+                    <td><div class="badge-container"><span class="badge paid">Alex: +49.48</span><span class="badge owes">Diana: -12.37</span><span class="badge owes">Billy: -12.37</span><span class="badge owes">Cheryl: -12.37</span><span class="badge owes">Darryl: -12.37</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-25</td>
+                    <td class="col-desc">Peking Duck lunch (hiang)</td>
+                    <td class="col-cost">232.94</td>
+                    <td><div class="badge-container"><span class="badge paid">Hiang: +211.76</span><span class="badge owes">Others: ~ -21.17</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-26</td>
+                    <td class="col-desc">No.3 warehouse lunch - Diana Family (Diana)</td>
+                    <td class="col-cost">101.94</td>
+                    <td><div class="badge-container"><span class="badge paid">Diana: +81.55</span><span class="badge owes">Billy: -20.39</span><span class="badge owes">Cheryl: -20.39</span><span class="badge owes">Darryl: -20.39</span><span class="badge owes">Alex: -20.38</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-26</td>
+                    <td class="col-desc">Hai Di Lao (Alex paid for Cheryl and Darryl)</td>
+                    <td class="col-cost">109.73</td>
+                    <td><div class="badge-container"><span class="badge paid">Alex: +73.15</span><span class="badge owes">Cheryl: -36.58</span><span class="badge owes">Darryl: -36.57</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-27</td>
+                    <td class="col-desc">Zhu Jia Jiao Lunch (Hiang)</td>
+                    <td class="col-cost">161.39</td>
+                    <td><div class="badge-container"><span class="badge paid">Hiang: +146.72</span><span class="badge owes">Others: ~ -14.67</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-28</td>
+                    <td class="col-desc">No.3 warehouse lunch - Shirley Family + Ahyis (Hiang)</td>
+                    <td class="col-cost">108.65</td>
+                    <td><div class="badge-container"><span class="badge paid">Hiang: +90.54</span><span class="badge owes">Others: ~ -18.11</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2025-12-28</td>
+                    <td class="col-desc">Billy Birthday Dinner - Diana Family (Diana)</td>
+                    <td class="col-cost">190.65</td>
+                    <td><div class="badge-container"><span class="badge paid">Diana: +152.52</span><span class="badge owes">Billy: -38.13</span><span class="badge owes">Cheryl: -38.13</span><span class="badge owes">Darryl: -38.13</span><span class="badge owes">Alex: -38.13</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-29</td>
+                    <td class="col-desc">Wai Po Jia at HangZhou - Shirley Family + Ahyis  (Hiang)</td>
+                    <td class="col-cost">58.08</td>
+                    <td><div class="badge-container"><span class="badge paid">Hiang: +48.40</span><span class="badge owes">Others: ~ -9.68</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-29</td>
+                    <td class="col-desc">DTF - Diana Family (Diana)</td>
+                    <td class="col-cost">153.22</td>
+                    <td><div class="badge-container"><span class="badge paid">Diana: +122.57</span><span class="badge owes">Billy: -30.65</span><span class="badge owes">Cheryl: -30.64</span><span class="badge owes">Darryl: -30.64</span><span class="badge owes">Alex: -30.64</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2025-12-29</td>
+                    <td class="col-desc">DTF - Shirley Family + Ahyis (Hiang)</td>
+                    <td class="col-cost">165.13</td>
+                    <td><div class="badge-container"><span class="badge paid">Hiang: +137.61</span><span class="badge owes">Others: ~ -27.52</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2025-12-30</td>
+                    <td class="col-desc">Megan bought food at disney for Diana</td>
+                    <td class="col-cost">20.20</td>
+                    <td><div class="badge-container"><span class="badge paid">Megan: +20.20</span><span class="badge owes">Diana: -20.20</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2025-12-30</td>
+                    <td class="col-desc">Apoli Itabakery - Darryl transfer debt to Cheryl</td>
+                    <td class="col-cost">30.00</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +15.00</span><span class="badge owes">Alex: -15.00</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2025-12-30</td>
+                    <td class="col-desc">Italian dinner - Diana family (Diana)</td>
+                    <td class="col-cost">74.67</td>
+                    <td><div class="badge-container"><span class="badge paid">Diana: +59.74</span><span class="badge owes">Billy: -14.94</span><span class="badge owes">Cheryl: -14.93</span><span class="badge owes">Darryl: -14.94</span><span class="badge owes">Alex: -14.93</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2025-12-31</td>
+                    <td class="col-desc">Famous egg rolls (Annie)</td>
+                    <td class="col-cost">8.64</td>
+                    <td><div class="badge-container"><span class="badge paid">Annie: +8.64</span><span class="badge owes">Others: ~ -2.16</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-31</td>
+                    <td class="col-desc">Peets coffee - Darryl transfer debt to Cheryl</td>
+                    <td class="col-cost">20.17</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +13.45</span><span class="badge owes">Annie: -6.73</span><span class="badge owes">Alex: -6.72</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2025-12-31</td>
+                    <td class="col-desc">Fei Da Chu - Shirley Family + Ahyis (Belle)</td>
+                    <td class="col-cost">53.82</td>
+                    <td><div class="badge-container"><span class="badge paid">Belle: +44.85</span><span class="badge owes">Others: ~ -8.97</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2025-12-31</td>
+                    <td class="col-desc">Fei Da Chu - Diana Family (Diana)</td>
+                    <td class="col-cost">57.74</td>
+                    <td><div class="badge-container"><span class="badge paid">Diana: +46.19</span><span class="badge owes">Billy: -11.55</span><span class="badge owes">Cheryl: -11.55</span><span class="badge owes">Darryl: -11.54</span><span class="badge owes">Alex: -11.55</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2026-01-09</td>
+                    <td class="col-desc">Yu Garden breakfast (Hiang)</td>
+                    <td class="col-cost">36.34</td>
+                    <td><div class="badge-container"><span class="badge paid">Hiang: +27.26</span><span class="badge owes">Diana: -9.09</span><span class="badge owes">Annie: -9.08</span><span class="badge owes">Billy: -9.09</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2026-01-11</td>
+                    <td class="col-desc">Chagee 29th for Cheryl, Alex, Darryl (Cheryl)</td>
+                    <td class="col-cost">11.82</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +7.88</span><span class="badge owes">Darryl: -3.94</span><span class="badge owes">Alex: -3.94</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2026-01-11</td>
+                    <td class="col-desc">Peets Coffee (22/12) and Tomato Soup (Belle paid for Annie)</td>
+                    <td class="col-cost">15.20</td>
+                    <td><div class="badge-container"><span class="badge paid">Belle: +15.20</span><span class="badge owes">Annie: -15.20</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2026-01-11</td>
+                    <td class="col-desc">Chagee 25th for Cheryl, Megan, Tim, Belle (Cheryl)</td>
+                    <td class="col-cost">19.18</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +14.39</span><span class="badge owes">Belle: -4.80</span><span class="badge owes">Timmy: -4.79</span><span class="badge owes">Megan: -4.80</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2026-01-11</td>
+                    <td class="col-desc">Chagee for Alex and Darryl (Cheryl)</td>
+                    <td class="col-cost">23.30</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +23.30</span><span class="badge owes">Darryl: -11.65</span><span class="badge owes">Alex: -11.65</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2026-01-11</td>
+                    <td class="col-desc">23rd meituan dinner (Cheryl)</td>
+                    <td class="col-cost">46.37</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +42.15</span><span class="badge owes">Others: ~ -4.22</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2026-01-11</td>
+                    <td class="col-desc">Hai Di Lao for Hiang, Diana, Billy, Annie</td>
+                    <td class="col-cost">73.31</td>
+                    <td><div class="badge-container"><span class="badge paid">Billy: +54.98</span><span class="badge owes">Diana: -18.33</span><span class="badge owes">Annie: -18.33</span><span class="badge owes">Hiang: -18.33</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2026-01-11</td>
+                    <td class="col-desc">Ah Yi's flight ticket (Shirley)</td>
+                    <td class="col-cost">281.00</td>
+                    <td><div class="badge-container"><span class="badge paid">Shirley: +234.16</span><span class="badge owes">Belle: -46.83</span><span class="badge owes">Annie: -46.83</span><span class="badge owes">Hiang: -46.84</span><span class="badge owes">Timmy: -46.83</span><span class="badge owes">Megan: -46.83</span></div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- DiDi & Transport -->
+<div class="slide-container">
+    <div class="header-with-image">
+        <h2 class="slide-title" style="border:none;">DiDi & Transport</h2>
+        <img class="header-thumb" src="http://googleusercontent.com/image_collection/image_retrieval/11591708572757742493">
+    </div>
+    <div class="content-area">
+        <table>
+            <thead>
+                <tr>
+                    <th class="col-date">Date</th>
+                    <th class="col-desc">Description</th>
+                    <th class="col-cost">Cost (SGD)</th>
+                    <th class="col-alloc">Shares</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">DiDi 20 dec (darryl) - Darryl transfer debt to Cheryl</td>
+                    <td class="col-cost">17.33</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +15.75</span><span class="badge owes">Others: ~ -1.58</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-22</td>
+                    <td class="col-desc">DiDi 20 dec (belle)</td>
+                    <td class="col-cost">18.15</td>
+                    <td><div class="badge-container"><span class="badge paid">Belle: +16.64</span><span class="badge owes">Others: ~ -1.51</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-24</td>
+                    <td class="col-desc">DiDi total paid by cheryl</td>
+                    <td class="col-cost">183.38</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +168.10</span><span class="badge owes">Others: ~ -15.28</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-25</td>
+                    <td class="col-desc">DiDi 25 dec (darryl )</td>
+                    <td class="col-cost">12.89</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +11.72</span><span class="badge owes">Others: ~ -1.17</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-25</td>
+                    <td class="col-desc">DiDi 25 dec (belle)</td>
+                    <td class="col-cost">14.65</td>
+                    <td><div class="badge-container"><span class="badge paid">Belle: +13.43</span><span class="badge owes">Others: ~ -1.22</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-25</td>
+                    <td class="col-desc">DiDi 23 dec (belle)</td>
+                    <td class="col-cost">40.23</td>
+                    <td><div class="badge-container"><span class="badge paid">Belle: +36.58</span><span class="badge owes">Others: ~ -3.66</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-28</td>
+                    <td class="col-desc">DiDi to and from animal park (darryl)</td>
+                    <td class="col-cost">45.96</td>
+                    <td><div class="badge-container"><span class="badge paid">Billy: +41.79</span><span class="badge owes">Others: ~ -4.18</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-28</td>
+                    <td class="col-desc">DiDi to and from animal park (belle)</td>
+                    <td class="col-cost">43.19</td>
+                    <td><div class="badge-container"><span class="badge paid">Belle: +39.26</span><span class="badge owes">Others: ~ -3.93</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-29</td>
+                    <td class="col-desc">DiDi total by alex</td>
+                    <td class="col-cost">133.53</td>
+                    <td><div class="badge-container"><span class="badge paid">Alex: +122.40</span><span class="badge owes">Others: ~ -11.13</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-29</td>
+                    <td class="col-desc">DiDi 26-29 Dec (darryl) - Darryl transfer debt to Cheryl</td>
+                    <td class="col-cost">83.21</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +76.28</span><span class="badge owes">Others: ~ -6.93</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-30</td>
+                    <td class="col-desc">DiDi 26-30 dec (belle)</td>
+                    <td class="col-cost">161.01</td>
+                    <td><div class="badge-container"><span class="badge paid">Belle: +147.60</span><span class="badge owes">Others: ~ -13.42</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-30</td>
+                    <td class="col-desc">DiDi total paid by timmy</td>
+                    <td class="col-cost">50.32</td>
+                    <td><div class="badge-container"><span class="badge paid">Timmy: +46.13</span><span class="badge owes">Others: ~ -4.20</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2026-01-09</td>
+                    <td class="col-desc">DiDi total paid by darryl (darryl)</td>
+                    <td class="col-cost">53.64</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +49.17</span><span class="badge owes">Others: ~ -4.47</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2026-01-09</td>
+                    <td class="col-desc">DiDi total paid by belle (Belle)</td>
+                    <td class="col-cost">111.45</td>
+                    <td><div class="badge-container"><span class="badge paid">Belle: +102.16</span><span class="badge owes">Others: ~ -9.29</span></div></td>
+                </tr>
+                 <tr>
+                    <td class="col-date">2026-01-09</td>
+                    <td class="col-desc">DiDi total paid by alex (alex)</td>
+                    <td class="col-cost">83.17</td>
+                    <td><div class="badge-container"><span class="badge paid">Alex: +76.24</span><span class="badge owes">Others: ~ -6.93</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2026-01-09</td>
+                    <td class="col-desc">DiDi total paid by timmy (timmy)</td>
+                    <td class="col-cost">33.72</td>
+                    <td><div class="badge-container"><span class="badge paid">Timmy: +30.91</span><span class="badge owes">Others: ~ -2.81</span></div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Toys & Miscellaneous -->
+<div class="slide-container">
+    <div class="header-with-image">
+        <h2 class="slide-title" style="border:none;">Toys & Miscellaneous</h2>
+        <img class="header-thumb" src="http://googleusercontent.com/image_collection/image_retrieval/9282480476504325151">
+    </div>
+    <div class="content-area">
+        <table>
+             <thead>
+                <tr>
+                    <th class="col-date">Date</th>
+                    <th class="col-desc">Description</th>
+                    <th class="col-cost">Cost (SGD)</th>
+                    <th class="col-alloc">Shares</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-date">2025-12-24</td>
+                    <td class="col-desc">Bubble toy gun (belle)</td>
+                    <td class="col-cost">3.00</td>
+                    <td><div class="badge-container"><span class="badge paid">Belle: +3.00</span><span class="badge owes">Cheryl: -3.00</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-25</td>
+                    <td class="col-desc">Bubble toy gun (Timmy)</td>
+                    <td class="col-cost">5.00</td>
+                    <td><div class="badge-container"><span class="badge paid">Timmy: +5.00</span><span class="badge owes">Megan: -5.00</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-27</td>
+                    <td class="col-desc">Toy for Luca (Belle)</td>
+                    <td class="col-cost">4.00</td>
+                    <td><div class="badge-container"><span class="badge paid">Belle: +4.00</span><span class="badge owes">Cheryl: -4.00</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2025-12-31</td>
+                    <td class="col-desc">Alex popmart (Darryl transfer debt to Cheryl)</td>
+                    <td class="col-cost">27.44</td>
+                    <td><div class="badge-container"><span class="badge paid">Cheryl: +27.44</span><span class="badge owes">Darryl: -27.44</span></div></td>
+                </tr>
+                <tr>
+                    <td class="col-date">2026-01-08</td>
+                    <td class="col-desc">Luca bubble toy (belle)</td>
+                    <td class="col-cost">33.00</td>
+                    <td><div class="badge-container"><span class="badge paid">Belle: +33.00</span><span class="badge owes">Cheryl: -33.00</span></div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
