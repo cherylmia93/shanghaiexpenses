@@ -37,10 +37,10 @@ body {
 h1, h2, h3 { font-family: 'Poppins', sans-serif; color: #111; margin: 0; }
 
 h1 { 
-    font-size: clamp(24px, 5vw, 48px);
+    font-size: clamp(32px, 6vw, 80px);
     font-weight: 700; 
     line-height: 1.1;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 h2.slide-title { 
@@ -55,17 +55,8 @@ h2.slide-title {
     gap: 10px;
 }
 
-h3.block-title {
-    font-size: 20px;
-    color: #334155;
-    margin-bottom: 10px;
-    margin-top: 5px; /* Reduced top margin for tighter mobile look */
-    padding-left: 10px;
-    border-left: 4px solid;
-}
-
 .subtitle { 
-    font-size: clamp(14px, 2.5vw, 18px);
+    font-size: clamp(16px, 3vw, 24px); 
     color: #64748b; 
     line-height: 1.4; 
 }
@@ -78,7 +69,7 @@ h3.block-title {
 /* SUMMARY GRID */
 .summary-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Slightly tighter for small mobile */
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 10px;
     width: 100%;
 }
@@ -101,36 +92,24 @@ h3.block-title {
 .status-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
 
 /* WHO PAYS WHO TABLE STYLES */
-.settlement-block {
-    margin-bottom: 25px;
-}
 .settlement-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 5px;
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden; 
 }
-.settlement-header-row th {
-    background-color: #f1f5f9;
-    color: #475569;
+.settlement-table th {
+    background-color: #f8fafc;
+    color: #64748b;
     font-weight: 600;
     text-align: left;
-    padding: 10px 12px;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    padding: 12px;
+    border-bottom: 2px solid #e2e8f0;
 }
-
 .settlement-table td {
     padding: 12px;
     border-bottom: 1px solid #f1f5f9;
     font-size: 18px;
     color: #334155;
-}
-.settlement-table tr:last-child td {
-    border-bottom: none;
 }
 .settlement-table td:last-child {
     font-weight: 700;
@@ -170,7 +149,7 @@ h3.block-title {
     background: #fff;
 }
 .title-image {
-    height: 150px;
+    height: 200px;
     width: 100%;
     background-size: cover;
     background-position: center;
@@ -179,24 +158,16 @@ h3.block-title {
 @media (min-width: 768px) {
     .title-slide-layout {
         flex-direction: row;
-        min-height: 300px; 
+        min-height: 400px;
     }
     .title-content {
         flex: 1;
         text-align: left;
-        padding: 40px;
+        padding: 60px;
     }
     .title-image { flex: 1; height: auto; }
-    h1 { margin-bottom: 15px; }
+    h1 { margin-bottom: 20px; }
     .content-area { padding: 25px; }
-    
-    .settlement-wrapper {
-        display: flex;
-        gap: 30px;
-    }
-    .settlement-block {
-        flex: 1;
-    }
 }
 
 /* --- RESPONSIVE TABLE STYLES --- */
@@ -230,18 +201,14 @@ td {
 /* Mobile Table Transformation */
 @media (max-width: 767px) {
     /* 1. Generic Mobile Table (Cards) - Applies to Transaction Tables */
-    table:not(.settlement-table), 
-    table:not(.settlement-table) thead, 
-    table:not(.settlement-table) tbody, 
-    table:not(.settlement-table) th, 
-    table:not(.settlement-table) td, 
-    table:not(.settlement-table) tr { 
+    table, thead, tbody, th, td, tr { 
         display: block; 
     }
     
-    table:not(.settlement-table) thead { display: none; }
+    thead { display: none; }
     
-    table:not(.settlement-table) tr {
+    /* Transaction Card Style */
+    tr {
         background: #fff;
         border: 1px solid #e2e8f0;
         border-radius: 12px;
@@ -253,12 +220,13 @@ td {
         gap: 8px; 
     }
     
-    table:not(.settlement-table) td {
+    td {
         padding: 0;
         border: none;
         display: block;
     }
 
+    /* Transaction Cell Styling */
     .col-cost {
         font-size: 24px;
         font-weight: 800;
@@ -279,24 +247,19 @@ td {
     }
 
     /* 2. Specific Override for "Who Pays Who" Settlement Table */
+    /* This brings back the table-like/flex row feel for just this section */
     .settlement-table tr {
         display: flex !important;
         flex-direction: row !important;
         align-items: center;
         justify-content: space-between;
         gap: 5px;
-        padding: 12px 10px; 
-        margin-bottom: 0;
-        border-bottom: 1px solid #f1f5f9;
-    }
-    
-    /* HIDE HEADER ON MOBILE for settlement tables */
-    .settlement-table thead {
-        display: none; 
+        padding: 12px 10px; /* Tighter padding */
+        margin-bottom: 8px;
     }
 
     /* Payer (Billy ➔) */
-    .settlement-table td:nth-child(1) {
+    .settlement-table tr:not(.separator-row) td:nth-child(1) {
         width: auto;
         white-space: nowrap;
         color: #475569;
@@ -305,18 +268,34 @@ td {
         margin-right: 4px;
     }
 
-    /* Receiver (Belle) - Hidden on mobile */
-    .settlement-table td:nth-child(2) {
-       display: none; 
+    /* Receiver (Belle) */
+    .settlement-table tr:not(.separator-row) td:nth-child(2) {
+        flex-grow: 1;
+        color: #0f172a;
+        font-weight: 700;
+        font-size: 16px;
     }
 
     /* Amount (1,795.07) */
-    .settlement-table td:nth-child(3) {
+    .settlement-table tr:not(.separator-row) td:nth-child(3) {
         text-align: right;
         font-weight: 800;
         color: #15803d;
         font-size: 18px;
-        margin-left: auto;
+    }
+
+    /* Separator Rows (Fully Paid) */
+    .settlement-table tr.separator-row {
+        justify-content: center;
+        background-color: #f0fdf4; /* Light green bg override */
+        border: none;
+        box-shadow: none;
+        padding: 8px;
+    }
+    .settlement-table tr.separator-row td {
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
     }
 }
 
@@ -336,23 +315,24 @@ td {
     border: 1px solid transparent;
 }
 
-/* Payer Colors */
-.badge.payer-belle { background-color: #e0f2f1; color: #00695c; border-color: #4db6ac; } 
-.badge.payer-cheryl { background-color: #f3e5f5; color: #6a1b9a; border-color: #ba68c8; } 
-.badge.payer-hiang { background-color: #fff3e0; color: #e65100; border-color: #ffb74d; } 
-.badge.payer-alex { background-color: #e3f2fd; color: #1565c0; border-color: #64b5f6; } 
-.badge.payer-timmy { background-color: #e8eaf6; color: #283593; border-color: #7986cb; } 
-.badge.payer-diana { background-color: #fce4ec; color: #ad1457; border-color: #f06292; } 
-.badge.payer-billy { background-color: #e0f7fa; color: #00838f; border-color: #4dd0e1; } 
-.badge.payer-shirley { background-color: #ffebee; color: #c62828; border-color: #e57373; } 
-.badge.payer-megan { background-color: #f9fbe7; color: #827717; border-color: #dce775; } 
-.badge.payer-annie { background-color: #fff8e1; color: #ff8f00; border-color: #ffd54f; } 
-.badge.payer-darryl { background-color: #eceff1; color: #37474f; border-color: #90a4ae; } 
-.badge.payer-luca { background-color: #f3e5f5; color: #4a148c; border-color: #ab47bc; } 
+/* Payer Colors - The "GETS" badge styles */
+.badge.payer-belle { background-color: #e0f2f1; color: #00695c; border-color: #4db6ac; } /* Teal */
+.badge.payer-cheryl { background-color: #f3e5f5; color: #6a1b9a; border-color: #ba68c8; } /* Purple */
+.badge.payer-hiang { background-color: #fff3e0; color: #e65100; border-color: #ffb74d; } /* Orange */
+.badge.payer-alex { background-color: #e3f2fd; color: #1565c0; border-color: #64b5f6; } /* Blue */
+.badge.payer-timmy { background-color: #e8eaf6; color: #283593; border-color: #7986cb; } /* Indigo */
+.badge.payer-diana { background-color: #fce4ec; color: #ad1457; border-color: #f06292; } /* Pink */
+.badge.payer-billy { background-color: #e0f7fa; color: #00838f; border-color: #4dd0e1; } /* Cyan */
+.badge.payer-shirley { background-color: #ffebee; color: #c62828; border-color: #e57373; } /* Red/Rose */
+.badge.payer-megan { background-color: #f9fbe7; color: #827717; border-color: #dce775; } /* Lime */
+.badge.payer-annie { background-color: #fff8e1; color: #ff8f00; border-color: #ffd54f; } /* Amber */
+.badge.payer-darryl { background-color: #eceff1; color: #37474f; border-color: #90a4ae; } /* Blue Grey */
+.badge.payer-luca { background-color: #f3e5f5; color: #4a148c; border-color: #ab47bc; } /* Purple Deep */
 
+/* Owes Style - High Contrast for Seniors */
 .badge.owes {
-    background-color: #4b5563; 
-    color: #ffffff; 
+    background-color: #4b5563; /* Dark Grey */
+    color: #ffffff; /* White text */
     border: 1px solid #374151;
 }
 
@@ -444,96 +424,78 @@ td {
 <div class="slide-container">
     <h2 class="slide-title">🤝 Who Pays Who (Final Settlement)</h2>
     <div class="content-area">
-        <div class="settlement-wrapper">
-            
-            <!-- PAY BELLE BLOCK -->
-            <div class="settlement-block">
-                <h3 class="block-title" style="border-color: #00695c; color: #00695c;">To Pay Belle</h3>
-                <table class="settlement-table">
-                    <thead>
-                        <tr class="settlement-header-row">
-                            <th>From</th>
-                            <th>To</th>
-                            <th style="text-align: right;">Amount (SGD)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Billy <span class="settlement-arrow">➔</span></td>
-                            <td>Belle</td>
-                            <td>1,795.07</td>
-                        </tr>
-                        <tr>
-                            <td>Annie <span class="settlement-arrow">➔</span></td>
-                            <td>Belle</td>
-                            <td>1,745.76</td>
-                        </tr>
-                        <tr>
-                            <td>Darryl <span class="settlement-arrow">➔</span></td>
-                            <td>Belle</td>
-                            <td>1,731.86</td>
-                        </tr>
-                        <tr>
-                            <td>Megan <span class="settlement-arrow">➔</span></td>
-                            <td>Belle</td>
-                            <td>1,700.19</td>
-                        </tr>
-                        <tr>
-                            <td>Timmy <span class="settlement-arrow">➔</span></td>
-                            <td>Belle</td>
-                            <td>1,669.99</td>
-                        </tr>
-                        <tr>
-                            <td>Alex <span class="settlement-arrow">➔</span></td>
-                            <td>Belle</td>
-                            <td>520.56</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- PAY CHERYL BLOCK -->
-            <div class="settlement-block">
-                <h3 class="block-title" style="border-color: #6a1b9a; color: #6a1b9a;">To Pay Cheryl</h3>
-                <table class="settlement-table">
-                    <thead>
-                        <tr class="settlement-header-row">
-                            <th>From</th>
-                            <th>To</th>
-                            <th style="text-align: right;">Amount (SGD)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Alex <span class="settlement-arrow">➔</span></td>
-                            <td>Cheryl</td>
-                            <td>898.00</td>
-                        </tr>
-                        <tr>
-                            <td>Luca <span class="settlement-arrow">➔</span></td>
-                            <td>Cheryl</td>
-                            <td>1,388.92</td>
-                        </tr>
-                        <tr>
-                            <td>Diana <span class="settlement-arrow">➔</span></td>
-                            <td>Cheryl</td>
-                            <td>1,229.07</td>
-                        </tr>
-                        <tr>
-                            <td>Shirley <span class="settlement-arrow">➔</span></td>
-                            <td>Cheryl</td>
-                            <td>854.63</td>
-                        </tr>
-                        <tr>
-                            <td>Hiang <span class="settlement-arrow">➔</span></td>
-                            <td>Cheryl</td>
-                            <td>544.00</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
+        <table class="settlement-table">
+            <thead>
+                <tr>
+                    <th>From (Payer)</th>
+                    <th>To (Receiver)</th>
+                    <th style="text-align: right;">Amount (SGD)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Billy <span class="settlement-arrow">➔</span></td>
+                    <td>Belle</td>
+                    <td>1,795.07</td>
+                </tr>
+                <tr>
+                    <td>Darryl <span class="settlement-arrow">➔</span></td>
+                    <td>Belle</td>
+                    <td>1,731.86</td>
+                </tr>
+                <tr>
+                    <td>Megan <span class="settlement-arrow">➔</span></td>
+                    <td>Belle</td>
+                    <td>1,700.19</td>
+                </tr>
+                <tr>
+                    <td>Luca <span class="settlement-arrow">➔</span></td>
+                    <td>Belle</td>
+                    <td>1,388.92</td>
+                </tr>
+                <tr>
+                    <td>Diana <span class="settlement-arrow">➔</span></td>
+                    <td>Belle</td>
+                    <td>1,229.07</td>
+                </tr>
+                <tr>
+                    <td>Shirley <span class="settlement-arrow">➔</span></td>
+                    <td>Belle</td>
+                    <td>774.32</td>
+                </tr>
+                <tr>
+                    <td>Hiang <span class="settlement-arrow">➔</span></td>
+                    <td>Belle</td>
+                    <td>544.00</td>
+                </tr>
+                <tr class="separator-row" style="background-color: #f0fdf4;">
+                    <td colspan="3" style="color: #15803d; font-weight: bold;">↑ Belle is Fully Paid $9163.43 ↑</td>
+                </tr>
+                <tr>
+                    <td>Annie <span class="settlement-arrow">➔</span></td>
+                    <td>Cheryl</td>
+                    <td>1,745.76</td>
+                </tr>
+                <tr>
+                    <td>Timmy <span class="settlement-arrow">➔</span></td>
+                    <td>Cheryl</td>
+                    <td>1,669.99</td>
+                </tr>
+                <tr>
+                    <td>Alex <span class="settlement-arrow">➔</span></td>
+                    <td>Cheryl</td>
+                    <td>1,418.56</td>
+                </tr>
+                <tr>
+                    <td>Shirley <span class="settlement-arrow">➔</span></td>
+                    <td>Cheryl</td>
+                    <td>80.31</td>
+                </tr>
+                <tr class="separator-row" style="background-color: #f3e5f5;">
+                    <td colspan="3" style="color: #6a1b9a; font-weight: bold;">↑ Cheryl is Fully Paid $4914.62 ↑</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
